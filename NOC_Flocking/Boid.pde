@@ -22,14 +22,14 @@ class Boid {
     maxspeed = 1;
     maxforce = 0.05;
   }
-  /**Boid(float x, float y, float maxspeed){
+  Boid(float x, float y, float maxspeed){
     acceleration = new PVector(0,0);
     velocity = new PVector(random(-1,1),random(-1,1));
     location = new PVector(x,y);
     r = 3.0;
     this.maxspeed = maxspeed;
     maxforce = 0.05;
-  }**/
+  }
 
   void run(ArrayList<Boid> boids) {
     flock(boids);
