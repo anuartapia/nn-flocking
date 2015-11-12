@@ -18,14 +18,14 @@ void setup() {
     Boid b = new Boid(width/2,height/2);
     flock.addBoid(b);
   }
-  for(int j = 0; j < 5; j++){
+  for(int j = 0; j < 15; j++){
     Boid b = new Boid(random(-1,width),random(-1,height),0);
     flock.addBoid(b);
   }
 }
 
 void draw() {
-  background(255);
+  background(0);
   flock.run();
   
   // Instructions

@@ -85,7 +85,7 @@ class Boid {
   void render() {
     // Draw a triangle rotated in the direction of velocity
     float theta = velocity.heading2D() + radians(90);
-    fill(175);
+    fill(random(255),random(255),random(255));
     stroke(0);
     pushMatrix();
     translate(location.x,location.y);
