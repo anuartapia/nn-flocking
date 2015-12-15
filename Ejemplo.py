@@ -11,7 +11,7 @@ from pybrain.datasets import SupervisedDataSet
 from pybrain.supervised.trainers import BackpropTrainer
 
 # Una red con 2 neuronas en la capa de entrada, 3 en la capa intermedia y 1 en la capa de salida
-net = buildNetwork(2,3,1, bias=True, hiddenclass=TanhLayer)
+net = buildNetwork(2,3,1)
 
 # Dataset de entrenamiento que soporta entradas de dos dimensiones y salidas de una dimensión
 ds = SupervisedDataSet(2,1)
@@ -23,3 +23,11 @@ ds.addSample((1,0),(1))
 ds.addSample((1,1),(0))
 
 # Trainer para ajustar la red, recibe la red y el conjunto de entrenamiento
+trainer = BackpropTrainer(net,ds)
+# Realizamos el entrenamiento hasta la convergencia
+print trainer.trainUntilConvergence()
+
+print net.activate([0,0]);
+print net.activate([0,1]);
+print net.activate([1,0]);
+print net.activate([1,1]);
