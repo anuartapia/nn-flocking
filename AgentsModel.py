@@ -22,19 +22,31 @@ class AgentsModel(object):
 		self.createSwarm()
 
 	def createSwarm(self):
+		"""
+		Initializes a list of n=self.numAgents boids and stores it in 
+		self.swarm
+		Each boid has random position and random orientation, but constant
+		velocity given by self.regularSpeed
+		"""
 		self.swarm = []
-		velocity = 1
+		velocity = self.regularSpeed
 		for x in xrange(0,self.numAgents):
 			position = (random.random(),random.random())
 			orientation = normalize((random.random(),random.random()))
 			self.swarm.append(Boid(position,orientation,velocity))
 
 	def simulate(self,steps,dmax,motivation):
+		"""
+		Main simulation function, receives:
+		steps - number of time steps
+		dmax - maximal distance Dmax up to which objects can be detected within the boid’s visual hemisphere
+		motivation - motivation parameter dm
+		"""
 		for i in xrange(0,steps):
 			pass
 
 if __name__ == '__main__':
-	am = AgentsModel(10,0.5,180,1000,30)
+	am = AgentsModel(10,1,180,1000,30)
 	print am.swarm
 	for b in am.swarm:
 		print b.orientation, magnitude(b.orientation)
