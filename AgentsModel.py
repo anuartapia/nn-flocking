@@ -19,16 +19,18 @@ class AgentsModel(object):
 		self.detectionRadius = detectionRadius
 		self.view = view
 		self.agility = agility
-		self.swarm = self.createSwarm()
+		self.createSwarm()
 
 	def createSwarm(self):
 		self.swarm = []
-		position = (random.random(),random.random())
-		orientation = normalize((random.random(),random.random()))
 		velocity = 1
 		for x in xrange(0,self.numAgents):
-			self.swarm.append(Boid(position,orientation,velocity))
+			position = (random.random(),random.random())
+			direction = normalize((random.random(),random.random()))
+			self.swarm.append(Boid(position,direction,velocity))
 
 if __name__ == '__main__':
 	am = AgentsModel(10,0.5,180,1000,30)
-	print am
+	print am.swarm
+	for b in am.swarm:
+		print b.direction, magnitude(b.direction)
