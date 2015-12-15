@@ -7,9 +7,3 @@ class Boid(object):
 		self.position = position
 		self.orientation = orientation
 		self.velocity = velocity
-
-pos = ['x','y','z']
-ori = ['x','y','z']
-vel = 0.5
-b = Boid(pos,ori,vel)
-print b.position
