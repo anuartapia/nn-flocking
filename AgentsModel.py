@@ -41,9 +41,39 @@ class AgentsModel(object):
 		steps - number of time steps
 		dmax - maximal distance Dmax up to which objects can be detected within the boid’s visual hemisphere
 		motivation - motivation parameter dm
+		At end of execution self.psotitions and self.orientations store the configuration of the
+		system (boids in space) at each step of the simulation
 		"""
-		for i in xrange(0,steps):
-			pass
+		# Initializes self.psotitions and self.orientations
+		self.initConfiguration(steps)
+		p = self.positions
+		d = self.orientations
+		# For each time step
+		for t in xrange(0,steps):
+			# For all boids bi
+			for i, bi in enumerate(am.swarm):
+				# Find all visible boids to bi
+				bjs = self.visibleBoids(bi)
+				# If there is no boids visible to bi
+				if (len(bjs) == 0) :
+					d[i][t+1] = d[i][t]
+					p[i][t+1] = d[i][t] + self.regularSpeed * d[i][t+1]
+				# There are boids visible to bi
+				else :
+					d[i][t+1] = 0
+					p[i][t+1] = 0
+					# For all boids visible to bi
+					for j, bj in enumerate(bjs):
+						# Calculate new values based on the neural nework
+						dij, pij = newData(bi, bj, t)
+						d[i][t+1] = d[i][t+1] + dij
+						p[i][t+1] = p[i][t+1] + pij
+					# Take average values to make a decision
+					d[i][t+1] = d[i][t+1] / len(bj)
+					p[i][t+1] = p[i][t+1] / len(bj)
+				bi.orientation = d[i][t+1] 
+				bi.position = p[i][t+1] 
+
 
 if __name__ == '__main__':
 	am = AgentsModel(10,1,180,1000,30)
