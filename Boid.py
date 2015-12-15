@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 class Boid(object):
 	"""docstring for Boid"""
-	def __init__(self, position, direction, velocity):
+	def __init__(self, position, orientation, velocity):
 		super(Boid, self).__init__()
 		self.position = position
-		self.direction = direction
+		self.orientation = orientation
 		self.velocity = velocity

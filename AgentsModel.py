@@ -26,11 +26,15 @@ class AgentsModel(object):
 		velocity = 1
 		for x in xrange(0,self.numAgents):
 			position = (random.random(),random.random())
-			direction = normalize((random.random(),random.random()))
-			self.swarm.append(Boid(position,direction,velocity))
+			orientation = normalize((random.random(),random.random()))
+			self.swarm.append(Boid(position,orientation,velocity))
+
+	def simulate(self,steps,dmax,motivation):
+		for i in xrange(0,steps):
+			pass
 
 if __name__ == '__main__':
 	am = AgentsModel(10,0.5,180,1000,30)
 	print am.swarm
 	for b in am.swarm:
-		print b.direction, magnitude(b.direction)
+		print b.orientation, magnitude(b.orientation)
