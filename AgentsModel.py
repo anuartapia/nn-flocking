@@ -19,7 +19,15 @@ class AgentsModel(object):
 		self.detectionRadius = detectionRadius
 		self.view = view
 		self.agility = agility
+		# List with all boids in the simulation
+		self.swarm = None
 		self.createSwarm()
+		# Stores boids' position in a given time of the simulation
+		# [i][t] = i-boid's position at t time
+		self.positions = None
+		# Stores boids' orientation in a given time of the simulation
+		# [i][t] = i-boid's orientation at t time
+		self.orientations = None
 
 	def createSwarm(self):
 		"""
@@ -41,17 +49,17 @@ class AgentsModel(object):
 		steps - number of time steps
 		dmax - maximal distance Dmax up to which objects can be detected within the boid’s visual hemisphere
 		motivation - motivation parameter dm
-		At end of execution self.psotitions and self.orientations store the configuration of the
+		At end of execution self.positions and self.orientations store the configuration of the
 		system (boids in space) at each step of the simulation
 		"""
-		# Initializes self.psotitions and self.orientations
+		# Initializes self.positions and self.orientations
 		self.initConfiguration(steps)
 		p = self.positions
 		d = self.orientations
 		# For each time step
 		for t in xrange(0,steps):
 			# For all boids bi
-			for i, bi in enumerate(am.swarm):
+			for i, bi in enumerate(self.swarm):
 				# Find all visible boids to bi
 				bjs = self.visibleBoids(bi)
 				# If there is no boids visible to bi
@@ -72,7 +80,18 @@ class AgentsModel(object):
 					d[i][t+1] = d[i][t+1] / len(bj)
 					p[i][t+1] = p[i][t+1] / len(bj)
 				bi.orientation = d[i][t+1] 
-				bi.position = p[i][t+1] 
+				bi.position = p[i][t+1]
+	
+	def initConfiguration(self,steps):
+		"""
+		Initializes self.positions and self.orientations
+		"""
+		n = len(self.swarm)
+		self.positions = [[0 for y in xrange(steps)] for x in xrange(n)]
+		self.orientations = [[0 for y in xrange(steps)] for x in xrange(n)]
+		for i, bi in enumerate(self.swarm):
+			self.positions[i][0] = bi.position
+			self.orientations[i][0] = bi.orientation
 
 
 if __name__ == '__main__':
