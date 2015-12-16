@@ -102,6 +102,7 @@ class AgentsModel(object):
 		with tags indicating wich sensor detected them
 		eg [[bj,0],[bk,3]] means bj was detected by s0 and bk was detected
 		by s3
+		Also appends the distance to each boid
 		"""
 		visibles = []
 		pi = bi.position
@@ -131,16 +132,17 @@ class AgentsModel(object):
 			# If bj appears in any of the sensors, append it to visibles
 			#if isBetween(pi, s0transformed, pj): isBetween(pi, s1transformed, pj) or isBetween(pi, s2transformed, pj) or isBetween(pi, s3transformed, pj) or isBetween(pi, s4transformed, pj) :
 			#	visibles.append(bj)
+			distance = magnitude(sub(pi,pj))
 			if isBetween(pi, s0transformed, pj):
-				visibles.append([bj,0])
+				visibles.append( [bj, 0, distance] )
 			if isBetween(pi, s1transformed, pj):
-				visibles.append([bj,1])
+				visibles.append( [bj, 1, distance] )
 			if isBetween(pi, s2transformed, pj):
-				visibles.append([bj,2])
+				visibles.append( [bj, 2, distance] )
 			if isBetween(pi, s3transformed, pj):
-				visibles.append([bj,3])
+				visibles.append( [bj, 3, distance] )
 			if isBetween(pi, s4transformed, pj):
-				visibles.append([bj,4])
+				visibles.append( [bj, 4, distance] )
 		return visibles
 
 
