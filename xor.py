@@ -6,13 +6,21 @@ from pybrain.supervised.trainers import BackpropTrainer
 import pickle
 
 if __name__ == "__main__":
-	ds = SupervisedDataSet(2, 1)
-	ds.addSample( (0,0) , (0,))
-	ds.addSample( (0,1) , (1,))
-	ds.addSample( (1,0) , (1,))
-	ds.addSample( (1,1) , (0,))
+	ds = SupervisedDataSet(6, 1)
+	# Agregamos muestras al dataset (para el XOR)
+	ds.addSample((1, 0, 0, 0, 0, 0),(.75,))
+	ds.addSample((0, 1, 0, 0, 0, 0),(1,))
+	ds.addSample((0, 0, 1, 0, 0, 0),(1,))
+	ds.addSample((0, 0, 1, 0, 0, 0),(0,))
+	ds.addSample((0, 0, 0, 1, 0, 0),(0,))
+	ds.addSample((0, 0, 0, 0, 1, 0),(.25,))
+	ds.addSample((1, 0, 0, 0, 0, 1),(.25,))
+	ds.addSample((0, 1, 0, 0, 0, 1),(.25,))
+	ds.addSample((0, 0, 1, 0, 0, 1),(.5,))
+	ds.addSample((0, 0, 0, 1, 0, 1),(.75,))
+	ds.addSample((0, 0, 0, 0, 1, 1),(.75,))
 
-	net = buildNetwork(2, 4, 1, bias=True)
+	net = buildNetwork(6, 7, 1, bias=True)
 
 	try:
 		f = open('_learned', 'r')
@@ -27,7 +35,14 @@ if __name__ == "__main__":
 		f.close()
 	
 
-	print net.activate((1,1))
-	print net.activate((0,0))
-	print net.activate((1,0))
-	print net.activate((0,1))
+	print net.activate([1,0,0,0,0,0])
+	print net.activate([0,1,0,0,0,0])
+	print net.activate([0,0,1,0,0,0])
+	print net.activate([0,0,1,0,0,0])
+	print net.activate([0,0,0,1,0,0])
+	print net.activate([0,0,0,0,1,0])
+	print net.activate([1,0,0,0,0,1])
+	print net.activate([0,1,0,0,0,1])
+	print net.activate([0,0,1,0,0,1])
+	print net.activate([0,0,0,1,0,1])
+	print net.activate([0,0,0,0,1,1])
