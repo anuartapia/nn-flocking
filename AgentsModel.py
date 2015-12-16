@@ -66,7 +66,7 @@ class AgentsModel(object):
 				# If there is no boids visible to bi
 				if (len(bjs) == 0) :
 					d[i][t+1] = d[i][t]
-					p[i][t+1] = d[i][t] + self.regularSpeed * d[i][t+1]
+					p[i][t+1] = p[i][t] + self.regularSpeed * d[i][t+1]
 				# There are boids visible to bi
 				else :
 					d[i][t+1] = 0
