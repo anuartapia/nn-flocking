@@ -33,6 +33,13 @@ def normalize(v):
 	vmag = magnitude(v)
 	return [ v[i]/vmag  for i in range(len(v)) ]
 
+def scale(a, u):
+	"""
+	Scalar product of a and u
+	"""
+	return [ a*u[i] for i in range(len(u)) ]
+
+
 def isBetween(u,v,w):
 	"""
 	Returns true iif w is between u and v in R2
@@ -53,7 +60,7 @@ def isBetween(u,v,w):
 	return True
 
 if __name__ == '__main__':
-    l = [1, 1, 1]
+    l = [1, 2, 3]
     v = [0, 0, 0]
 
     h = normalize(add(l, v))
@@ -63,3 +70,5 @@ if __name__ == '__main__':
     c = [0.9,0.9]
     isb = isBetween(a,b,c)
     print isb
+    w = scale(2.5,l)
+    print w
