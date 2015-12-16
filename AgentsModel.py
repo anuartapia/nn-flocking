@@ -98,13 +98,15 @@ class AgentsModel(object):
 
 	def visibleBoids(self,bi):
 		"""
-		Returns a list of all boids visible to bi in self.swarm, paired
-		with tags indicating wich sensor detected them
-		eg [[bj,0],[bk,3]] means bj was detected by s0 and bk was detected
-		by s3
-		Also appends the distance to each boid
+		Returns a list of all boids visible to bi in self.swarm, a list
+		with tags indicating wich sensor detected them, and a list with
+		the distances to each boid detected
+		eg boids[k], sensors[k] and distances[k] is the k-th boid detected
+		by the sensors[k] sensor at distances[k] distance
 		"""
-		visibles = []
+		boids = []
+		sensors = []
+		distances = []
 		pi = bi.position
 		# Determine the five vectors representing boid's sensors (eyes)
 		# North (straigth) sensor
@@ -134,16 +136,26 @@ class AgentsModel(object):
 			#	visibles.append(bj)
 			distance = magnitude(sub(pi,pj))
 			if isBetween(pi, s0transformed, pj):
-				visibles.append( [bj, 0, distance] )
+				boids.append(bj)
+				sensors.append(0)
+				distances.append(distance)
 			if isBetween(pi, s1transformed, pj):
-				visibles.append( [bj, 1, distance] )
+				boids.append(bj)
+				sensors.append(1)
+				distances.append(distance)
 			if isBetween(pi, s2transformed, pj):
-				visibles.append( [bj, 2, distance] )
+				boids.append(bj)
+				sensors.append(2)
+				distances.append(distance)
 			if isBetween(pi, s3transformed, pj):
-				visibles.append( [bj, 3, distance] )
+				boids.append(bj)
+				sensors.append(3)
+				distances.append(distance)
 			if isBetween(pi, s4transformed, pj):
-				visibles.append( [bj, 4, distance] )
-		return visibles
+				boids.append(bj)
+				sensors.append(4)
+				distances.append(distance)
+		return boids, sensors, distances
 
 
 if __name__ == '__main__':
