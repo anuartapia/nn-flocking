@@ -22,18 +22,9 @@ if __name__ == "__main__":
 
 	net = buildNetwork(6, 7, 1, bias=True)
 
-	try:
-		f = open('_learned', 'r')
-		net = pickle.load(f)
-		f.close()
-	except:
-		trainer = BackpropTrainer(net, learningrate = 0.01, momentum = 0.99)
-		trainer.trainOnDataset(ds, 1000)
-		trainer.testOnData()
-		f = open('_learned', 'w')
-		pickle.dump(net, f)
-		f.close()
-	
+	trainer = BackpropTrainer(net, learningrate = 0.01, momentum = 0.99)
+	trainer.trainOnDataset(ds, 1000)
+	trainer.testOnData()	
 
 	print net.activate([1,0,0,0,0,0])
 	print net.activate([0,1,0,0,0,0])
