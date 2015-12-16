@@ -98,7 +98,10 @@ class AgentsModel(object):
 
 	def visibleBoids(self,bi):
 		"""
-		Returns a list of all boids visible to bi in self.swarm
+		Returns a list of all boids visible to bi in self.swarm, paired
+		with tags indicating wich sensor detected them
+		eg [[bj,0],[bk,3]] means bj was detected by s0 and bk was detected
+		by s3
 		"""
 		visibles = []
 		pi = bi.position
@@ -126,8 +129,18 @@ class AgentsModel(object):
 		for j, bj in enumerate(self.swarm):
 			pj = bj.position
 			# If bj appears in any of the sensors, append it to visibles
-			if isBetween(pi, s0transformed, pj) or isBetween(pi, s1transformed, pj) or isBetween(pi, s2transformed, pj) or isBetween(pi, s3transformed, pj) or isBetween(pi, s4transformed, pj) :
-				visibles.append(bj)
+			#if isBetween(pi, s0transformed, pj): isBetween(pi, s1transformed, pj) or isBetween(pi, s2transformed, pj) or isBetween(pi, s3transformed, pj) or isBetween(pi, s4transformed, pj) :
+			#	visibles.append(bj)
+			if isBetween(pi, s0transformed, pj):
+				visibles.append([bj,0])
+			if isBetween(pi, s1transformed, pj):
+				visibles.append([bj,1])
+			if isBetween(pi, s2transformed, pj):
+				visibles.append([bj,2])
+			if isBetween(pi, s3transformed, pj):
+				visibles.append([bj,3])
+			if isBetween(pi, s4transformed, pj):
+				visibles.append([bj,4])
 		return visibles
 
 
