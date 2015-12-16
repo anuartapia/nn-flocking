@@ -61,10 +61,10 @@ class AgentsModel(object):
 		for t in xrange(0,steps):
 			# For all boids bi
 			for i, bi in enumerate(self.swarm):
-				# Find all visible boids to bi
-				bjs = self.visibleBoids(bi)
+				# Find all visible boids to bi, wich sensors detected them and distances to them
+				boids, sensors, distances = self.visibleBoids(bi)
 				# If there is no boids visible to bi
-				if (len(bjs) == 0) :
+				if (len(boids) == 0) :
 					d[i][t+1] = d[i][t]
 					p[i][t+1] = p[i][t] + self.regularSpeed * d[i][t+1]
 				# There are boids visible to bi
@@ -72,9 +72,9 @@ class AgentsModel(object):
 					d[i][t+1] = 0
 					p[i][t+1] = 0
 					# For all boids visible to bi
-					for j, bj in enumerate(bjs):
+					for j, bj in enumerate(boids):
 						# Calculate new values based on the neural nework
-						dij, pij = newData(bi, bj, t)
+						dij, pij = self.newData(i, t, sensors[j], distances[j], motivation)
 						d[i][t+1] = d[i][t+1] + dij
 						p[i][t+1] = p[i][t+1] + pij
 					# Take average values to make a decision
@@ -157,6 +157,24 @@ class AgentsModel(object):
 				distances.append(distance)
 		return boids, sensors, distances
 
+	def newData(self, i, t, sensor, distance, motivation):
+		# Calculate sensivity of the seen boid
+		sensivity = 1 - log(distance + 1) / log(self.dmax + 1)
+		# Inputs to be processed by bi's control system (neural network)
+		netInputs = [0,0,0,0,0,motivation]
+		netInputs[sensor] = sensivity
+		# Output of bi's control system
+		s = self.swarm[i].decide(netInputs)
+		# Compute new orientation of bi, dij
+		d = self.orientations[i][t]
+		dm = None
+		if s >= 0:
+			dm = scale( (1-s), d)
+		else:
+			dm = scale( (1+s), d)
+		dij = normalize(add(d, normalize(dm)))
+		pij = self.positions[i][t] + scale(self.regularSpeed, dij)
+		return dij, pij
 
 if __name__ == '__main__':
 	am = AgentsModel(10,1,180,1000,30)

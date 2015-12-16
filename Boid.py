@@ -12,3 +12,7 @@ class Boid(object):
 		self.position = position
 		self.orientation = orientation
 		self.velocity = velocity
+		self.net = None
+
+	def decide(self, netInputs):
+		return self.net.activate(netInputs)
