@@ -62,7 +62,7 @@ class AgentsModel(object):
 		p = self.positions
 		d = self.orientations
 		# For each time step
-		for t in xrange(0,steps):
+		for t in xrange(0,steps-1):
 			# For all boids bi
 			for i, bi in enumerate(self.swarm):
 				# Find all visible boids to bi, wich sensors detected them and distances to them
@@ -70,20 +70,18 @@ class AgentsModel(object):
 				# If there is no boids visible to bi
 				if (len(boids) == 0) :
 					d[i][t+1] = d[i][t]
-					p[i][t+1] = p[i][t] + self.regularSpeed * d[i][t+1]
+					p[i][t+1] = add( p[i][t], scale(self.regularSpeed, d[i][t+1]))
 				# There are boids visible to bi
 				else :
-					d[i][t+1] = 0
-					p[i][t+1] = 0
 					# For all boids visible to bi
 					for j, bj in enumerate(boids):
 						# Calculate new values based on the neural nework
 						dij, pij = self.newData(i, t, sensors[j], distances[j], motivation)
-						d[i][t+1] = d[i][t+1] + dij
-						p[i][t+1] = p[i][t+1] + pij
+						d[i][t+1] = add( d[i][t+1], dij)
+						p[i][t+1] = add( p[i][t+1], pij)
 					# Take average values to make a decision
-					d[i][t+1] = d[i][t+1] / len(bj)
-					p[i][t+1] = p[i][t+1] / len(bj)
+					d[i][t+1] = scale( (1/len(boids)), d[i][t+1])
+					p[i][t+1] = scale( (1/len(boids)), p[i][t+1])
 				bi.orientation = d[i][t+1] 
 				bi.position = p[i][t+1]
 	
@@ -95,8 +93,8 @@ class AgentsModel(object):
 		At time t=0 both matrixes have boids' initial attributes
 		"""
 		n = len(self.swarm)
-		self.positions = [[[0,0] for y in xrange(steps)] for x in xrange(n)]
-		self.orientations = [[[0,0] for y in xrange(steps)] for x in xrange(n)]
+		self.positions = [[(0,0) for y in xrange(steps)] for x in xrange(n)]
+		self.orientations = [[(0,0) for y in xrange(steps)] for x in xrange(n)]
 		for i, bi in enumerate(self.swarm):
 			self.positions[i][0] = bi.position
 			self.orientations[i][0] = bi.orientation
@@ -202,4 +200,5 @@ if __name__ == '__main__':
 		print "pos: "+str(b.position)+" ori: "+str(b.orientation)+" mag: "+str(magnitude(b.orientation))
 	am.simulate(10,0)
 	print am.positions
+	print "===================="
 	print am.orientations
