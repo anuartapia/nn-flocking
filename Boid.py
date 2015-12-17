@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import ControlSystem
 class Boid(object):
 	"""
 	Simple agent, part of a swarm intelligence simulation
@@ -12,7 +13,7 @@ class Boid(object):
 		self.position = position
 		self.orientation = orientation
 		self.velocity = velocity
-		self.net = None
-
+		self.net = neuronalNetwork()
+		
 	def decide(self, netInputs):
 		return self.net.activate(netInputs)
