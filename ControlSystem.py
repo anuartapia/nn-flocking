@@ -8,7 +8,7 @@ from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 import pickle
 
-def neuronalNetwork():
+def neuralNetwork():
 	#We create a supervised data set with six inputs and one output
 	ds = SupervisedDataSet(6, 1)
 	#We add samples to the data set
@@ -29,18 +29,6 @@ def neuronalNetwork():
 
 	trainer = BackpropTrainer(net, learningrate = 0.01, momentum = 0.99)
 	trainer.trainOnDataset(ds, 1000)
-	trainer.testOnData()	
-
-	print net.activate([1,0,0,0,0,0])
-	print net.activate([0,1,0,0,0,0])
-	print net.activate([0,0,1,0,0,0])
-	print net.activate([0,0,1,0,0,0])
-	print net.activate([0,0,0,1,0,0])
-	print net.activate([0,0,0,0,1,0])
-	print net.activate([1,0,0,0,0,1])
-	print net.activate([0,1,0,0,0,1])
-	print net.activate([0,0,1,0,0,1])
-	print net.activate([0,0,0,1,0,1])
-	print net.activate([0,0,0,0,1,1])
+	trainer.testOnData()
 
 	return net

@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import ControlSystem
 class Boid(object):
 	"""
 	Simple agent, part of a swarm intelligence simulation
 	position - absolute position p ∈ R3 in an unbounded 3D space
 	orientation - current orientation which is the present moving direction d ∈ R3 , where |d| = 1
 	velocity - current agent velocity v ∈ R
+	net - neural network
 	"""
-	def __init__(self, position, orientation, velocity):
+	def __init__(self, position, orientation, velocity, net):
 		super(Boid, self).__init__()
 		self.position = position
 		self.orientation = orientation
 		self.velocity = velocity
-		self.net = neuronalNetwork()
-		
+		self.net = net
+
 	def decide(self, netInputs):
 		return self.net.activate(netInputs)

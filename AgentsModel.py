@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 from Boid import *
 from Utils import *
+from ControlSystem import neuralNetwork
+from math import log
+
 import random
 
 class AgentsModel(object):
@@ -40,10 +43,11 @@ class AgentsModel(object):
 		"""
 		self.swarm = []
 		velocity = self.regularSpeed
+		net = neuralNetwork()
 		for x in xrange(0,self.numAgents):
 			position = (random.random(),random.random())
 			orientation = normalize((random.random(),random.random()))
-			self.swarm.append(Boid(position,orientation,velocity))
+			self.swarm.append(Boid(position,orientation,velocity,net))
 
 	def simulate(self,steps,motivation):
 		"""
@@ -195,3 +199,6 @@ if __name__ == '__main__':
 	am = AgentsModel(10,0.5,0.5,180,0.5,30)
 	for b in am.swarm:
 		print "pos: "+str(b.position)+" ori: "+str(b.orientation)+" mag: "+str(magnitude(b.orientation))
+	am.simulate(10,0)
+	print am.positions
+	print am.orientations
