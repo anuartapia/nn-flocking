@@ -191,7 +191,7 @@ class AgentsModel(object):
 		# New direction
 		dij = normalize(add(d, normalize(dm)))
 		# New position
-		pij = self.positions[i][t] + scale(self.regularSpeed, dij)
+		pij = add( self.positions[i][t], scale(self.regularSpeed, dij))
 		return dij, pij
 
 if __name__ == '__main__':
