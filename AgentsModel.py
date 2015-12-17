@@ -49,11 +49,11 @@ class AgentsModel(object):
 		"""
 		Main simulation function, receives:
 		steps - number of time steps
-		motivation - motivation parameter dm
+		motivation - boid's motivation to form swarms (dm), 0->avoid 1->follow
 		At end of execution self.positions and self.orientations store the configuration of the
 		system (boids in space) at each step of the simulation
 		"""
-		# Initializes self.positions and self.orientations
+		# Initializes self.positions and self.orientations with zeroes
 		self.initConfiguration(steps)
 		p = self.positions
 		d = self.orientations
@@ -101,7 +101,7 @@ class AgentsModel(object):
 		Returns a list of all boids visible to bi in self.swarm, a list
 		with tags indicating wich sensor detected them, and a list with
 		the distances to each boid detected
-		eg boids[k], sensors[k] and distances[k] is the k-th boid detected
+		e.g. boids[k], sensors[k] and distances[k] are the k-th boid detected
 		by the sensors[k] sensor at distances[k] distance
 		"""
 		boids = []
@@ -131,10 +131,10 @@ class AgentsModel(object):
 		# Check all boids in swarm
 		for j, bj in enumerate(self.swarm):
 			pj = bj.position
-			# If bj appears in any of the sensors, append it to visibles
-			#if isBetween(pi, s0transformed, pj): isBetween(pi, s1transformed, pj) or isBetween(pi, s2transformed, pj) or isBetween(pi, s3transformed, pj) or isBetween(pi, s4transformed, pj) :
-			#	visibles.append(bj)
+			# Distance bewtween bi and bj
 			distance = magnitude(sub(pi,pj))
+			# If bj is visible to bi, append bj to boids[], correponding sensor
+			# to sensors[] and distance to distances[]
 			if isBetween(pi, s0transformed, pj):
 				boids.append(bj)
 				sensors.append(0)
@@ -158,26 +158,40 @@ class AgentsModel(object):
 		return boids, sensors, distances
 
 	def newData(self, i, t, sensor, distance, motivation):
+		"""
+		Computes new position and orientation of i-th boid in swarm, given:
+		t - current time step of simulation
+		sensor - numeric indicator of the sensor that detected a boid in its view range
+		distance - physical distance to detected boid
+		motivation - boid's motivation to form swarms
+		"""
 		# Calculate sensivity of the seen boid
 		sensivity = 1 - log(distance + 1) / log(self.dmax + 1)
 		# Inputs to be processed by bi's control system (neural network)
 		netInputs = [0,0,0,0,0,motivation]
+		# Set sensivity value to corresponding input of the system control
 		netInputs[sensor] = sensivity
 		# Output of bi's control system
 		s = self.swarm[i].decide(netInputs)
 		# Compute new orientation of bi, dij
+		# Current orientation
 		d = self.orientations[i][t]
+		# =========
+		# Tilting vector
 		dm = None
 		if s >= 0:
 			dm = scale( (1-s), d)
 		else:
 			dm = scale( (1+s), d)
+		# =========
+		# New direction
 		dij = normalize(add(d, normalize(dm)))
+		# New position
 		pij = self.positions[i][t] + scale(self.regularSpeed, dij)
 		return dij, pij
 
 if __name__ == '__main__':
-	am = AgentsModel(10,1,180,1000,30)
-	print am.swarm
+	#def __init__(numAgents, dmax, regularSpeed, detectionRadius, view, agility):
+	am = AgentsModel(10,0.5,0.5,180,0.5,30)
 	for b in am.swarm:
 		print "pos: "+str(b.position)+" ori: "+str(b.orientation)+" mag: "+str(magnitude(b.orientation))
