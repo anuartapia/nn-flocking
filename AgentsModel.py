@@ -90,12 +90,13 @@ class AgentsModel(object):
 	def initConfiguration(self,steps):
 		"""
 		Initializes self.positions and self.orientations as n*steps matrixes
-		where n=size of swarm and steps=time steps for simulation
+		where n=size of swarm and steps=time steps for simulation.
+		Each entry of matrixes is a vector (2 elements list)
 		At time t=0 both matrixes have boids' initial attributes
 		"""
 		n = len(self.swarm)
-		self.positions = [[0 for y in xrange(steps)] for x in xrange(n)]
-		self.orientations = [[0 for y in xrange(steps)] for x in xrange(n)]
+		self.positions = [[[0,0] for y in xrange(steps)] for x in xrange(n)]
+		self.orientations = [[[0,0] for y in xrange(steps)] for x in xrange(n)]
 		for i, bi in enumerate(self.swarm):
 			self.positions[i][0] = bi.position
 			self.orientations[i][0] = bi.orientation
